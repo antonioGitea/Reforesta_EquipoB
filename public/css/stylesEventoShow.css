@@ -1,0 +1,104 @@
+/* Configuración del cuerpo para forzar el tema oscuro */
+body.dark-theme {
+    background-color: #0d1117; /* Azul casi negro */
+    color: #c9d1d9;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.container-show {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Cabecera Estilo Neón */
+.main-header {
+    border-bottom: 1px solid #2ecc71;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.event-tag {
+    color: #2ecc71;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.event-title {
+    color: #ffffff;
+    font-size: 2.5rem;
+    margin: 10px 0;
+}
+
+.meta-item {
+    margin-right: 15px;
+    font-size: 0.9rem;
+    color: #8b949e;
+}
+
+/* Botones con brillo */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-edit { background: #1f6feb; color: white; }
+.btn-delete { background: #da3633; color: white; margin-left: 10px; }
+.btn-join { 
+    background: transparent; 
+    border: 1px solid #2ecc71; 
+    color: #2ecc71; 
+    width: 100%;
+}
+.btn-join:hover { background: #2ecc71; color: #0d1117; shadow: 0 0 15px #2ecc71; }
+
+/* Grid de contenido */
+.show-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+}
+
+.section-title {
+    color: #2ecc71;
+    font-size: 1.2rem;
+    border-left: 3px solid #2ecc71;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+
+/* Sidebar y Usuarios */
+.sidebar-box {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #2ecc71;
+}
+
+.user-nick { font-weight: bold; color: white; }
