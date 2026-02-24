@@ -13,7 +13,7 @@
         <h2 class="title">Eventos</h2>
 
         @if($eventos->isEmpty())
-            <p class="empty-msg">No hay eventos disponibles en este momento.</p>
+            <p>No hay eventos disponibles en este momento.</p>
         @else
             <div class="events-grid">
                 @foreach($eventos as $evento)
@@ -40,13 +40,6 @@
 
                         <div class="card-actions">
                             <a href="{{ route('eventos.show', $evento->id) }}" class="btn btn-details">Detalles</a>
-                            <a href="{{ route('eventos.edit', $evento->id) }}" class="btn btn-edit">Editar</a>
-                            
-                            <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este evento?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-delete">Eliminar</button>
-                            </form>
                         </div>
                     </div>
                 @endforeach

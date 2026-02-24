@@ -40,10 +40,12 @@ class EventoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Evento $evento)
     {
-        $evento = Evento::findOrFail($id);
-        //return view('contactos.show', compact('contacto'));
+        // Cargamos el anfitrión, los participantes y las especies asociadas
+        $evento->load(['anfitrion', 'usuarios', 'especies']);
+
+        return view('eventos.show', compact('evento'));
     }
 
     /**

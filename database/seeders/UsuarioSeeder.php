@@ -12,8 +12,22 @@ class UsuarioSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+
+
     public function run(): void
     {
+        Usuario::create([
+            'nick' => 'admin',
+            'nombre' => 'Administrador',
+            'email' => 'admin@reforesta.com',
+            'ubicacion' => 'Sede Central',
+            'karma' => 1000,
+            'avatar' => 'admin.jpg',
+            'tipo' => 'admin', 
+            'password' => Hash::make('1234'), 
+        ]);
+
         for ($i = 0; $i < 10; $i++) {
             Usuario::create([
                 'nick'       => fake()->userName(),

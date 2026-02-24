@@ -2,23 +2,35 @@
 
 namespace Database\Seeders;
 
-use App\Models\Usuario;
-use App\Models\Evento;
-use App\Models\Especie;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Usuario;
+use App\Models\Especie;
+use App\Models\Evento;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        \App\Models\Usuario::factory(10)->create();
-        \App\Models\Especie::factory(10)->create();
-        \App\Models\Evento::factory(10)->create();
+        
+        $this->call([
+            UsuarioSeeder::class,
+            EspecieSeeder::class,
+        ]);
+
+        $usuariosIds = Usuario::pluck('id');
+        $especiesIds = Especie::pluck('id');
+
+        $this->call(EventoSeeder::class);
+
+        $eventos = Evento::all();
+        foreach ($eventos as $evento) {
+            $evento->usuarios()->attach(
+                $usuariosIds->random(rand(3, 8))->toArray()
+            );
+
+            $evento->especies()->attach(
+                $especiesIds->random(rand(1, 4))->toArray()
+            );
+        }
     }
 }
