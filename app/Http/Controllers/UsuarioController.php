@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UsuarioController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth")->except(['loginForm', 'login']);
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -84,8 +79,7 @@ class UsuarioController extends Controller
         $credenciales = $request->only('nick', 'password');
 
         if (Auth::attempt($credenciales)) {
-            // TO-DO: Cambiar la ruta de libros.index al index general //
-            return redirect()->intended(route('libros.index'));
+            return redirect()->intended(route('eventos.index'));
 
         } else {
             $error = 'Usuario incorrecto';

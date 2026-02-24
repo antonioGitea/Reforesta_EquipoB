@@ -1,42 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/stylesLogin.css') }}">
     <title>REFORESTA - LOGIN</title>
-</head>
+    </head>
+<body class="login-body">
+    @include('nav')
 
-<body>
+    <div class="login-container">
+        <form action="{{ route('auth.login') }}" method="POST" class="login-card">
+            @csrf
 
-    @if (!empty($error))
-        <div class="textoError">
-            {{ $error }}
-        </div>
-    @endif
+            <h1>Iniciar Sesión</h1>
 
-    <form action="{{ route('login') }}" method="POST">
-        @csrf
+            @if(!empty($error))
+                <div class="error-message">
+                    {{ $error }}
+                </div>
+            @endif
 
-        <h1>Iniciar Sesión</h1>
+            <div class="form-group">
+                <label>Usuario (Nick):</label>
+                <input type="text" name="nick" required value="{{ old('nick') }}" placeholder="Tu nombre de usuario">
+            </div>
 
-        @if(isset($error))
-            <div style="color: red;">{{ $error }}</div>
-        @endif
+            <div class="form-group">
+                <label>Contraseña:</label>
+                <input type="password" name="password" required placeholder="••••••••">
+            </div>
 
-        <div>
-            <label>Usuario (Nick):</label>
-            <input type="text" name="nick" required value="{{ old('nick') }}">
-        </div>
-
-        <div>
-            <label>Contraseña:</label>
-            <input type="password" name="password" required>
-        </div>
-
-        <button type="submit">Entrar</button>
-
-    </form>
+            <button type="submit" class="btn-submit">Entrar</button>
+        </form>
+    </div>
 </body>
-
 </html>
