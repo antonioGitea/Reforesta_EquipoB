@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 
 class UsuarioController extends Controller
 {
     public function __construct()
     {
-        $this -> middleware("auth");
+        $this->middleware("auth")->except(['loginForm', 'login']);
     }
 
 
@@ -96,5 +96,8 @@ class UsuarioController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }
