@@ -1,43 +1,71 @@
-/* Estilos para el NAV */
-nav {
-    background-color: #1e293b; /* Mismo azul que las tarjetas */
-    margin: 20px auto;         /* Centra el bloque del nav */
-    padding: 15px 30px;
-    width: fit-content;        /* Se ajusta al ancho del contenido */
-    border-radius: 50px;       /* Forma de píldora/bocadillo */
-    border: 1px solid #334155;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+.main-nav {
     display: flex;
     justify-content: center;
-    align-items: center;
+    padding: 20px;
 }
 
-nav ul {
-    list-style: none;
+.nav-links {
     display: flex;
-    gap: 30px;                 /* Espacio entre los enlaces */
-    margin: 0;
-    padding: 0;
+    align-items: center;
+    background: #1a222d; /* El azul oscuro de tu barra */
+    padding: 10px 30px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 20px;
 }
 
-nav ul li a {
-    color: #f1f5f9;
+.nav-links a {
+    color: white;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: bold;
     font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #2ecc71;
+}
+
+/* --- PERFIL DE USUARIO --- */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 20px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-name {
+    color: #2ecc71; /* Verde neón para el nombre */
+    font-weight: bold;
+}
+
+.nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #2ecc71;
+}
+
+/* --- BOTÓN LOGOUT (Quitando el estilo gris feo) --- */
+.logout-form {
+    margin: 0;
+}
+
+.btn-logout {
+    background: none;
+    border: none;
+    color: #ff5e5e;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
+    padding: 0;
+    transition: opacity 0.3s;
 }
 
-/* Efecto Hover en Verde */
-nav ul li a:hover {
-    color: #22c55e;            /* Verde neón al pasar el mouse */
-    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
-}
-
-/* Enlace activo (Opcional, si quieres resaltar donde estás) */
-nav ul li a.active {
-    color: #22c55e;
-    border-bottom: 2px solid #22c55e;
+.btn-logout:hover {
+    opacity: 0.7;
+    text-decoration: underline;
 }

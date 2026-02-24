@@ -22,7 +22,7 @@
                             @if($evento->imagen)
                                 <img src="{{ asset('storage/' . $evento->imagen) }}" alt="{{ $evento->nombre }}">
                             @else
-                                <img src="https://via.placeholder.com/400x200?text=Sin+Imagen" alt="Sin imagen">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Arboleda_Navarra.jpg" alt="Sin imagen">
                             @endif
                             <span class="badge">{{ $evento->tipo_evento }}</span>
                         </div>
