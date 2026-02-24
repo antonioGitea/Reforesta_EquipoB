@@ -8,7 +8,6 @@
 </head>
 
 <body>
-    <h1>Iniciar Sesión</h1>
 
     @if (!empty($error))
         <div class="textoError">
@@ -17,20 +16,25 @@
     @endif
 
     <form action="{{ route('login') }}" method="POST">
-
         @csrf
 
+        <h1>Iniciar Sesión</h1>
+
+        @if(isset($error))
+            <div style="color: red;">{{ $error }}</div>
+        @endif
+
         <div>
-            <label for="login">Usuario:</label>
-            <input type="text" name="usuario" id="login" />
+            <label>Usuario (Nick):</label>
+            <input type="text" name="nick" required value="{{ old('nick') }}">
         </div>
 
         <div>
-            <label for="password">Contraseña:</label>
-            <input type="password" name="password" />
+            <label>Contraseña:</label>
+            <input type="password" name="password" required>
         </div>
 
-        <input type="submit" name="enviar" value="Enviar">
+        <button type="submit">Entrar</button>
 
     </form>
 </body>
