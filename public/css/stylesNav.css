@@ -1,0 +1,43 @@
+/* Estilos para el NAV */
+nav {
+    background-color: #1e293b; /* Mismo azul que las tarjetas */
+    margin: 20px auto;         /* Centra el bloque del nav */
+    padding: 15px 30px;
+    width: fit-content;        /* Se ajusta al ancho del contenido */
+    border-radius: 50px;       /* Forma de píldora/bocadillo */
+    border: 1px solid #334155;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;                 /* Espacio entre los enlaces */
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    color: #f1f5f9;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+/* Efecto Hover en Verde */
+nav ul li a:hover {
+    color: #22c55e;            /* Verde neón al pasar el mouse */
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+/* Enlace activo (Opcional, si quieres resaltar donde estás) */
+nav ul li a.active {
+    color: #22c55e;
+    border-bottom: 2px solid #22c55e;
+}
