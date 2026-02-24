@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evento;
+use App\Models\Especie;
 use Illuminate\Http\Request;
 
-class EventoController extends Controller
+class EspecieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $listaEventos = Evento::all();
+        $listaEspecies = Especie::all();
         //return view('contactos.index', compact('listaContactos'));
     }
 
@@ -42,7 +42,7 @@ class EventoController extends Controller
      */
     public function show(string $id)
     {
-        $evento = Evento::findOrFail($id);
+        $evento = Especie::findOrFail($id);
         //return view('contactos.show', compact('contacto'));
     }
 
@@ -51,7 +51,7 @@ class EventoController extends Controller
      */
     public function edit(string $id)
     {
-        $evento = Evento::findOrFail($id);
+        $especie = Especie::findOrFail($id);
         //return view('contactos.edit', compact('contacto'));
     }
 
@@ -60,8 +60,8 @@ class EventoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $evento = Evento::findOrFail($id);
-        if ($evento){
+        $especie = Especie::findOrFail($id);
+        if ($especie){
             /*$evento -> update(
                 [
                     'nombre' => $request->nombre,
@@ -77,7 +77,7 @@ class EventoController extends Controller
      */
     public function destroy(string $id)
     {
-        Evento::findOrFail($id)->delete();
+        Especie::findOrFail($id)->delete();
         //$listaContactos = Contacto::all();
         //return view("contactos.index", compact('listaContactos'));
     }
