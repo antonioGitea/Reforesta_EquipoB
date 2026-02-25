@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     // Eventos: Crear, editar y borrar
     Route::resource('eventos', EventoController::class)->except(['index', 'show']);
     Route::post('/eventos/{evento}/unirse', [EventoController::class, 'unirse'])->name('eventos.unirse');
+    Route::resource('especies', EspecieController::class)->only(['index', 'show'])->whereNumber('especie');
 
     Route::put('/eventos/{evento}/especies', [App\Http\Controllers\EventoController::class, 'updateEspecies'])
         ->name('eventos.updateEspecies')
