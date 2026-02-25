@@ -14,20 +14,24 @@
                 {{-- Solo se ve si está LOGUEADO --}}
                 <div class="user-profile">
                     <span class="user-name">{{ auth()->user()->nick }}</span>
-                    
+
                     {{-- Usamos la API de avatars temporalmente para que NO se vea la imagen rota --}}
-                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->nick }}&background=2ecc71&color=fff" alt="Avatar" class="nav-avatar">
+                    <a href="{{ route('usuarios.show', auth()->id()) }}" class="nav-avatar-link">
+                        <img src="https://ui-avatars.com/api/?name={{ auth()->user()->nick }}&background=2ecc71&color=fff"
+                            alt="Avatar" class="nav-avatar">
+                    </a>
 
                     <form action="{{ route('auth.logout') }}" method="POST" class="logout-form">
                         @csrf
                         <button type="submit" class="btn-logout">Cerrar Sesión</button>
                     </form>
                 </div>
+
+                <a href="{{ route('usuarios.index') }}">USUARIOS</a>
+                <a href="{{ route('eventos.create') }}">CREAR EVENTO</a>
             @endauth
 
             <a href="{{ route('home') }}">INICIO</a>
-            <a href="{{ route('usuarios.index') }}">USUARIOS</a>
-            <a href="{{ route('eventos.create') }}">CREAR EVENTO</a>
 
             @guest
                 <a href="{{ route('auth.login') }}" class="btn-login">INICIAR SESIÓN</a>

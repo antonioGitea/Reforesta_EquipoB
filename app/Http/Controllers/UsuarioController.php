@@ -14,7 +14,8 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = Usuario::all();
+        return view('usuarios.index', compact('usuarios'));
     }
 
     /**
@@ -38,7 +39,8 @@ class UsuarioController extends Controller
      */
     public function show(Usuario $usuario)
     {
-        //
+        $usuario = Usuario::findOrFail($usuario->id);
+        return view("usuarios.show", compact("usuario"));
     }
 
     /**

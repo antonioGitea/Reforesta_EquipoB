@@ -13,7 +13,7 @@
         protected $fillable = [
             'nombre_cientifico',
             'tiempo_para_adultez',
-            'region_origen', // Corregido el nombre
+            'region_origen',
             'clima',
             'enlace_descripcion',
             'foto_especie',
