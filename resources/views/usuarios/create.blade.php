@@ -33,6 +33,14 @@
             </div>
 
             <div class="form-group">
+                <label>Ubicación:</label>
+                <input type="text" name="ubicacion" value="{{ old('ubicacion') }}" 
+                       class="{{ $errors->has('ubicacion') ? 'is-invalid' : '' }}" 
+                       placeholder="Ej: Madrid, España" required>
+                @error('ubicacion') <span class="error-message">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group">
                 <label>Correo Electrónico:</label>
                 <input type="email" name="email" value="{{ old('email') }}" 
                        class="{{ $errors->has('email') ? 'is-invalid' : '' }}" required>
@@ -54,7 +62,7 @@
             <button type="submit" class="btn-submit">Registrarse</button>
 
             <p style="margin-top: 15px; text-align: center;">
-                <a href="{{ route('login') }}">¿Ya tienes cuenta? Entra aquí</a>
+                <a href="{{ route('login') }}" style="color: #2ecc71; text-decoration: none;">¿Ya tienes cuenta? Entra aquí</a>
             </p>
         </form>
     </div>
