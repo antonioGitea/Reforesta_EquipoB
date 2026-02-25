@@ -38,3 +38,4 @@ Route::middleware('auth')->group(function () {
 
 // Permitir ver eventos (index y show) a todo el mundo si lo deseas:
 Route::resource('eventos', EventoController::class)->only(['index', 'show']);
+
