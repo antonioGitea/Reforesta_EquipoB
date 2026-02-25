@@ -60,7 +60,7 @@ class UsuarioController extends Controller
     */
     public function update(StoreUsuarioRequest $request, Usuario $usuario)
     {
-        // 1. Recolectamos los datos validados (excepto password y avatar por ahora)
+        // 1. Recolectamos los datos validados (excepto password, que manejaremos aparte)
         $data = $request->only(['nombre', 'nick', 'email', 'ubicacion']);
 
         // 2. Lógica para la Contraseña: solo se actualiza si el usuario escribió algo
@@ -68,7 +68,6 @@ class UsuarioController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
-        // 4. Actualizamos el modelo con el array final
         $usuario->update($data);
 
         // 5. Redireccionamos con un mensaje de éxito
