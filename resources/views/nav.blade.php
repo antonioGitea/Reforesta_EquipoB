@@ -34,7 +34,8 @@
             <a href="{{ route('home') }}">INICIO</a>
 
             @guest
-                <a href="{{ route('auth.login') }}" class="btn-login">INICIAR SESIÓN</a>
+                <a href="{{ route('login') }}" class="btn-login">INICIAR SESIÓN</a>
+                <a href="{{ route('usuarios.create') }}" class="btn-login">REGISTRARSE</a>
             @endguest
         </div>
     </nav>

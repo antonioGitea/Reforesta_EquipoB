@@ -9,7 +9,7 @@
 <body class="login-body">
 
     <div class="login-container">
-        <form action="{{ route('auth.login') }}" method="POST" class="login-card">
+        <form action="{{ route('login') }}" method="POST" class="login-card">
             @csrf
 
             <h1>Iniciar Sesión</h1>

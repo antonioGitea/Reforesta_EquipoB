@@ -4,38 +4,30 @@ use App\Http\Controllers\EventoController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
-// --- RUTA PÚBLICA (Home) ---
+// 1. RUTAS PÚBLICAS (Accesibles por todos)
 Route::get('/', [EventoController::class, 'index'])->name('home');
+Route::resource('eventos', EventoController::class)->only(['index', 'show'])->whereNumber('evento');
 
-// --- RUTAS PARA INVITADOS (Solo si NO estás loggeado) ---
+// 2. RUTAS PARA INVITADOS (Solo si NO estás logueado)
 Route::middleware('guest')->group(function () {
-    Route::get('login', [UsuarioController::class, 'loginForm'])->name('auth.login');
+    // Login
+    Route::get('login', [UsuarioController::class, 'loginForm'])->name('login');
     Route::post('login', [UsuarioController::class, 'login']);
+
+    // Registro
+    Route::get('registro', [UsuarioController::class, 'create'])->name('usuarios.create');
+    Route::post('usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
 });
 
-// --- RUTAS PROTEGIDAS (Solo si ESTÁS loggeado) ---
+// 3. RUTAS PROTEGIDAS (Solo si ESTÁS logueado)
 Route::middleware('auth')->group(function () {
     
-    // Logout
     Route::post('logout', [UsuarioController::class, 'logout'])->name('auth.logout');
     
-    // Recursos protegidos (Normalmente quieres que solo usuarios loggeados creen/editen)
-    Route::resource('usuarios', UsuarioController::class);
+    // Usuarios: Ver lista, perfil, editar y borrar
+    Route::resource('usuarios', UsuarioController::class)->except(['create', 'store']);
+    
+    // Eventos: Crear, editar y borrar
     Route::resource('eventos', EventoController::class)->except(['index', 'show']);
-
-    // Ruta para mostrar el formulario de edición
-    Route::get('/eventos/{evento}/edit', [EventoController::class, 'edit'])->name('eventos.edit');
-    
-    // Ruta para procesar la actualización (PUT/PATCH)
-    Route::put('/eventos/{evento}', [EventoController::class, 'update'])->name('eventos.update');
-    
-    // Ruta para eliminar el evento
-    Route::delete('/eventos/{evento}', [EventoController::class, 'destroy'])->name('eventos.destroy');
-    
-    // Ruta personalizada para unirse al evento (POST por seguridad)
     Route::post('/eventos/{evento}/unirse', [EventoController::class, 'unirse'])->name('eventos.unirse');
 });
-
-// Permitir ver eventos (index y show) a todo el mundo si lo deseas:
-Route::resource('eventos', EventoController::class)->only(['index', 'show']);
-
