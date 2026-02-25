@@ -7,7 +7,6 @@
     <title>REFORESTA - LOGIN</title>
     </head>
 <body class="login-body">
-    @include('nav')
 
     <div class="login-container">
         <form action="{{ route('auth.login') }}" method="POST" class="login-card">

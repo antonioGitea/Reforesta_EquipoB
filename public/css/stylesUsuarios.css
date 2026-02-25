@@ -1,0 +1,145 @@
+/* --- Variables de Color (Tema Oscuro) --- */
+:root {
+    --bg-dark: #0f172a;       /* Fondo de la página (azul noche muy oscuro) */
+    --card-bg: #1e293b;      /* Fondo de la tarjeta */
+    --primary-green: #22c55e; /* Verde brillante para botones y badges */
+    --text-white: #f8fafc;    /* Blanco para títulos */
+    --text-gray: #94a3b8;     /* Gris para descripciones y etiquetas */
+    --border-color: #334155;  /* Línea divisoria */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    margin: 0;
+    color: var(--text-white);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary-green); /* Color verde como en tu imagen */
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+/* --- Grid de Tarjetas --- */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* --- Tarjeta Individual --- */
+.event-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+}
+
+/* --- Imagen y Badge --- */
+.card-image {
+    position: relative;
+    height: 200px;
+    background: #000; /* Fondo negro por si la imagen tarda en cargar */
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8; /* Un poco más oscuro para encajar con el tema */
+}
+
+.badge {
+    position: absolute;
+    bottom: 15px; /* Bajado como en tu imagen */
+    right: 15px;
+    background: var(--primary-green);
+    color: #052e16; /* Texto verde oscuro sobre fondo verde brillante */
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* --- Contenido de la Tarjeta --- */
+.card-content {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+.card-content h3 {
+    margin: 0 0 15px 0;
+    color: var(--text-white);
+    font-size: 1.5rem;
+}
+
+.card-content p {
+    margin: 10px 0;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-gray); /* Texto secundario grisáceo */
+}
+
+.full-description {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+/* --- Botones --- */
+.card-actions {
+    padding: 20px;
+    text-align: center;
+    background: rgba(0,0,0,0.1); /* Sutilmente más oscuro */
+}
+
+.btn {
+    display: block; /* Ocupa el ancho disponible */
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.btn-details {
+    background: var(--primary-green);
+    color: #052e16;
+}
+
+.btn-details:hover {
+    background: #4ade80;
+    transform: scale(1.02);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+}
