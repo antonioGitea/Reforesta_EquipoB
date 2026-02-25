@@ -6,6 +6,7 @@ use App\Models\Evento;
 use App\Models\Especie;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventoRequest;
+use Illuminate\Support\Facades\Auth;
 
 class EventoController extends Controller
 {
@@ -38,7 +39,7 @@ class EventoController extends Controller
         $validado = $request->validated();
 
         // 2. Añadir el usuario
-        $validado['id_usuario'] = auth()->id();
+        $validado['id_usuario'] = Auth::id();
 
         // 3. Crear el evento
         $evento = Evento::create($validado);
@@ -57,9 +58,9 @@ class EventoController extends Controller
     public function show(Evento $evento)
     {
         // Cargamos el anfitrión, los participantes y las especies asociadas
+        $especies = Especie::all();
         $evento->load(['anfitrion', 'usuarios', 'especies']);
-
-        return view('eventos.show', compact('evento'));
+        return view('eventos.show', compact('evento', 'especies'));
     }
 
     /**
@@ -74,18 +75,25 @@ class EventoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Evento $evento)
     {
-        $evento = Evento::findOrFail($id);
-        if ($evento) {
-            /*$evento -> update(
-                [
-                    'nombre' => $request->nombre,
-                    'email' => $request->email
-                ]);
-            return redirect()->route('contactos.show', $evento->id);
-            */
+        // 1. Verificación de seguridad
+        if (Auth::user()->id !== $evento->user_id && Auth::user()->rol !== 'admin') {
+            abort(403, 'No tienes permiso para modificar las especies de este evento.');
         }
+
+        // 2. Actualizar datos del evento
+        $evento->update($request->only(['nombre', 'descripcion', 'fecha', 'ubicacion']));
+
+        // 3. Sincronizar especies (el método sync borra las que no estén en el array y añade las nuevas)
+        if ($request->has('especies')) {
+            $evento->especies()->sync($request->especies);
+        } else {
+            // Si no mandan nada, quitamos todas las especies del evento
+            $evento->especies()->detach();
+        }
+
+        return redirect()->route('eventos.show', $evento->id)->with('success', 'Evento actualizado.');
     }
 
     /**
@@ -96,5 +104,20 @@ class EventoController extends Controller
         Evento::findOrFail($id)->delete();
         $eventos = Evento::all();
         return view("eventos.index", compact('eventos'));
+    }
+
+    public function updateEspecies(Request $request, Evento $evento)
+    {
+        // 1. ¿Eres el dueño o el jefe? Si no, fuera.
+        if (Auth::id() != $evento->id_usuario && Auth::user()->tipo != 'admin') {
+            abort(403);
+        }
+
+        // 2. Guardar los cambios (sync hace toda la magia)
+        // Toma la lista de la web y la deja igual en la base de datos
+        $evento->especies()->attach($request->especies);
+
+        // 3. Volver a la página del evento
+        return back()->with('success', 'Especies guardadas');
     }
 }

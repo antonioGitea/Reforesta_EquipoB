@@ -24,6 +24,15 @@
                     </div>
                 </div>
             </div>
+            <div class="header-actions">
+                @auth
+                    @if(auth()->id() == $usuario->id)
+                        <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-edit">
+                            ⚙️ Editar Perfil
+                        </a>
+                    @endif
+                @endauth
+            </div>  
         </header>
 
         <div class="show-grid">
@@ -37,10 +46,6 @@
                     <div>
                         <p style="font-size: 0.9em; color: #888;">Miembro desde</p>
                         <strong style="font-size: 1.2em;">{{ $usuario->created_at->format('M Y') }}</strong>
-                    </div>
-                    <div>
-                        <p style="font-size: 0.9em; color: #888;">Email Verificado</p>
-                        <strong>{{ $usuario->email_verified_at ? '✅ Sí' : '❌ No' }}</strong>
                     </div>
                 </div>
             </div>
