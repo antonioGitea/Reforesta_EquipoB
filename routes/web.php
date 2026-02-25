@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\EspecieController;
+use App\Models\Especie;
 use Illuminate\Support\Facades\Route;
 
 // 1. RUTAS PÚBLICAS (Accesibles por todos)
@@ -30,4 +32,8 @@ Route::middleware('auth')->group(function () {
     // Eventos: Crear, editar y borrar
     Route::resource('eventos', EventoController::class)->except(['index', 'show']);
     Route::post('/eventos/{evento}/unirse', [EventoController::class, 'unirse'])->name('eventos.unirse');
+
+    Route::put('/eventos/{evento}/especies', [App\Http\Controllers\EventoController::class, 'updateEspecies'])
+        ->name('eventos.updateEspecies')
+        ->middleware('auth');
 });

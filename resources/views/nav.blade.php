@@ -29,6 +29,7 @@
 
                 <a href="{{ route('usuarios.index') }}">USUARIOS</a>
                 <a href="{{ route('eventos.create') }}">CREAR EVENTO</a>
+                <a href="{{ route('especies.index') }}">ESPECIES</a>
             @endauth
 
             <a href="{{ route('home') }}">INICIO</a>

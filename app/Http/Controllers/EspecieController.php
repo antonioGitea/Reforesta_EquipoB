@@ -12,8 +12,8 @@ class EspecieController extends Controller
      */
     public function index()
     {
-        $listaEspecies = Especie::all();
-        //return view('contactos.index', compact('listaContactos'));
+        $especies = Especie::all();
+        return view('especies.index', compact('especies'));
     }
 
     /**
@@ -42,8 +42,8 @@ class EspecieController extends Controller
      */
     public function show(string $id)
     {
-        $evento = Especie::findOrFail($id);
-        //return view('contactos.show', compact('contacto'));
+        $especie = Especie::findOrFail($id);
+        return view('especies.show', compact('especie'));
     }
 
     /**
