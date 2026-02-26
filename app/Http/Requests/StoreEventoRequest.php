@@ -12,7 +12,7 @@ class StoreEventoRequest extends FormRequest
         return true;
     }
 
-    // Reglas de validación al crear/editar eventos.
+    // Validaciones de los campos de creacion
     public function rules(): array
     {
         return [
@@ -27,7 +27,7 @@ class StoreEventoRequest extends FormRequest
         ];
     }
 
-    // Mensajes personalizados de validación.
+    // Mensajes personalizados si no se supera la validacion
     public function messages(): array
     {
         return [

@@ -27,11 +27,12 @@ class UsuarioController extends Controller
     // Guarda un usuario nuevo y lo autentica.
     public function store(StoreUsuarioRequest $request)
     {
-        $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
-        $data['tipo'] = $data['tipo'] ?? 'usuario';
+        // Recogemos los datos que han pasado la validacion y ciframos la password
+        $datosEntrada = $request->validated();
+        $datosEntrada['password'] = Hash::make($datosEntrada['password']);
 
-        $usuario = Usuario::create($data);
+        //Creamos usuario y lo loggeamos
+        $usuario = Usuario::create($datosEntrada);
         Auth::login($usuario);
 
         return redirect()->route('home')->with('success', 'Registro completado con éxito.');
@@ -54,16 +55,16 @@ class UsuarioController extends Controller
     // Actualiza los datos del usuario.
     public function update(StoreUsuarioRequest $request, Usuario $usuario)
     {
-        // Datos que se pueden editar.
-        $data = $request->only(['nombre', 'nick', 'email', 'ubicacion']);
+        // Recogemos los datos que son editables
+        $datosEntrada = $request->only(['nombre', 'nick', 'email', 'ubicacion']);
 
-        // Solo cambia la clave si llega una nueva.
+        // Validamos que el campo este rellenado y hasheamos el nuevo password
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $datosEntrada['password'] = Hash::make($request->password);
         }
 
-        // Guarda cambios.
-        $usuario->update($data);
+        // Modificamos los datos
+        $usuario->update($datosEntrada);
 
         // Vuelve al perfil.
         return redirect()->route('usuarios.show', $usuario->id);

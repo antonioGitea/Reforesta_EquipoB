@@ -29,12 +29,7 @@ class EspecieController extends Controller
      */
     public function store(Request $request)
     {
-        /*$contacto = Contacto::create([
-            "nombre" => $request->nombre,
-            "email" => $request->email
-        ]);
-        return redirect()->route('contactos.show', $contacto->id);
-        */
+        //
     }
 
     /**
@@ -51,8 +46,7 @@ class EspecieController extends Controller
      */
     public function edit(string $id)
     {
-        $especie = Especie::findOrFail($id);
-        //return view('contactos.edit', compact('contacto'));
+        //
     }
 
     /**
@@ -60,16 +54,7 @@ class EspecieController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $especie = Especie::findOrFail($id);
-        if ($especie){
-            /*$evento -> update(
-                [
-                    'nombre' => $request->nombre,
-                    'email' => $request->email
-                ]);
-            return redirect()->route('contactos.show', $evento->id);
-            */
-        }
+        //
     }
 
     /**
@@ -77,8 +62,6 @@ class EspecieController extends Controller
      */
     public function destroy(string $id)
     {
-        Especie::findOrFail($id)->delete();
-        //$listaContactos = Contacto::all();
-        //return view("contactos.index", compact('listaContactos'));
+        //
     }
 }

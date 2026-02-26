@@ -111,40 +111,39 @@ class EventoController extends Controller
     // Une al usuario autenticado sin duplicar registros.
     public function unirse(Evento $evento)
     {
+        //Recogemos ID
         $idUsuario = Auth::id();
 
-        // 1. Validar que el usuario no sea el organizador
+        // 1. Validamos que el usuario no sea el organizador
         if ($evento->id_usuario === $idUsuario) {
             return back()->with('error', 'No puedes unirte a un evento que organizas.');
         }
 
-        // 2. Verificar si ya está unido (especificando la tabla users para evitar ambigüedad)
-        if (!$evento->usuarios()->where('id_usuario', $idUsuario)->exists()) {
+        // Agregamos el nuevo ID al valor de usuarios de la tabla intermedia
+        $evento->usuarios()->attach($idUsuario);
 
-            // Relacionar en la tabla pivote
-            $evento->usuarios()->attach($idUsuario);
+        // Buscamos el usuario por ID e incrementamos su Karma
+        Usuario::where('id', $idUsuario)->increment('karma', 3);
 
-            // 3. Incremento forzado vía Modelo (Esto no falla si la columna es numérica)
-            Usuario::where('id', $idUsuario)->increment('karma', 3);
+        return back()->with('success', 'Te has unido al evento y sumaste 3 de karma.');
 
-            return back()->with('success', 'Te has unido al evento y sumaste 3 de karma.');
-        }
 
         return back()->with('info', 'Ya formas parte de este evento.');
     }
 
     public function desunirse(Evento $evento)
     {
-        $userId = Auth::id();
+        //Recogemos ID
+        $idUsuario = Auth::id();
 
-        // 1. Verificar si el usuario realmente está unido al evento
-        if ($evento->usuarios()->where('id_usuario', $userId)->exists()) {
+        // 1. Verificar si el usuario está unido al evento
+        if ($evento->usuarios()->where('id_usuario', $idUsuario)->exists()) {
 
-            // Eliminar la relación en la tabla pivote
-            $evento->usuarios()->detach($userId);
+            // Eliminamos el ID del valor de usuarios de la tabla intermedia
+            $evento->usuarios()->detach($idUsuario);
 
-            // 2. Restar 2 de karma usando el modelo Usuario
-            Usuario::where('id', $userId)->decrement('karma', 3);
+            // Buscamos el usuario por ID y decrementamos su Karma
+            Usuario::where('id', $idUsuario)->decrement('karma', 3);
 
             return back()->with('success', 'Has abandonado el evento. Se han restado 2 puntos de karma.');
         }

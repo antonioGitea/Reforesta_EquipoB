@@ -12,15 +12,17 @@
     <div class="container">
         <h2 class="title">Especies Disponibles</h2>
 
+        {{-- Mensaje por defecto si no hay Especies --}}
         @if($especies->isEmpty())
             <p>No hay especies registradas en el catálogo.</p>
         @else
             <div class="events-grid">
+                {{-- Recorremos el listado y mostramos los datos de cada especie --}}
                 @foreach($especies as $especie)
                     <div class="event-card">
                         <div class="card-image">
                             @if($especie->foto_especie)
-                                <img src="{{ asset('storage/' . $especie->foto_especie) }}" alt="{{ $especie->nombre_cientifico }}">
+                                <img src="{{ $especie->foto_especie }}" alt="{{ $especie->nombre_cientifico }}">
                             @else
                                 {{-- Imagen por defecto si no hay foto --}}
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Plant_icon_noun_project_1142.svg" alt="Sin imagen" style="padding: 20px; opacity: 0.5;">

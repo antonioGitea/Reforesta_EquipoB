@@ -77,18 +77,8 @@
     @include('nav')
 
     <div class="container-show" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
-        @if(session('success'))
-        <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid #2ecc71; padding: 10px 14px; border-radius: 8px; margin-bottom: 20px;">
-            {{ session('success') }}
-        </div>
-        @endif
-        @if(session('error'))
-        <div style="background: rgba(248, 81, 73, 0.15); color: #f85149; border: 1px solid #f85149; padding: 10px 14px; border-radius: 8px; margin-bottom: 20px;">
-            {{ session('error') }}
-        </div>
-        @endif
 
-        {{-- Header del Evento --}}
+        {{-- Informacion principal del evento --}}
         <header class="main-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; border-bottom: 1px solid #30363d; padding-bottom: 30px;">
             <div>
                 <span class="event-tag" style="background: #238636; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase;">
@@ -101,9 +91,10 @@
                     <span>🌳 {{ $evento->tipo_terreno }}</span>
                 </div>
             </div>
-
+            
+            {{-- Validamos que aparezca el boton de eliminar si el id del anfitrion es el mismo que el del usuario autenticado --}}
             @auth
-            @if(auth()->id() == $evento->id_usuario || auth()->user()->tipo == 'admin')
+            @if(auth()->id() == $evento->id_usuario)
             <div class="header-actions" style="display: flex; gap: 10px;">
                 <a href="{{ route('eventos.edit', $evento->id) }}" class="btn btn-edit" style="background: #30363d; color: #c9d1d9; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;">Modificar</a>
                 <form action="{{ route('eventos.destroy', $evento->id) }}" method="POST">
@@ -199,7 +190,7 @@
                                 <form action="{{ route('eventos.desunirse', $evento) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-danger">
-                                        Abandonar Evento (-2 Karma)
+                                        Abandonar Evento (-3 Karma)
                                     </button>
                                 </form>
                             @else

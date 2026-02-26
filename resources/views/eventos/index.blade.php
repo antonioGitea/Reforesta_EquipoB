@@ -12,10 +12,12 @@
     <div class="container">
         <h2 class="title">Eventos</h2>
 
+        {{-- Mensaje por defecto si no hay Eventos --}}
         @if($eventos->isEmpty())
             <p>No hay eventos disponibles en este momento.</p>
         @else
             <div class="events-grid">
+                {{-- Recorremos la lista de eventos y mostramos los datos --}}
                 @foreach($eventos as $evento)
                     <div class="event-card">
                         <div class="card-image">

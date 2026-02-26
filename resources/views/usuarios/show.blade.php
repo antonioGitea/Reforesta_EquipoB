@@ -15,12 +15,12 @@
                      alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #2ecc71;">
                 
                 <div>
-                    <span class="event-tag">{{ ucfirst($usuario->tipo) }}</span>
+                    <span class="event-tag">{{ $usuario->tipo }}</span>
                     <h1 class="event-title">{{ $usuario->nick }}</h1>
                     <div class="event-meta">
-                        <span class="meta-item">👤 {{ $usuario->nombre ?? 'Sin nombre configurado' }}</span>
+                        <span class="meta-item">👤 {{ $usuario->nombre }}</span>
                         <span class="meta-item">📧 {{ $usuario->email }}</span>
-                        <span class="meta-item">📍 {{ $usuario->ubicacion ?? 'Ubicación desconocida' }}</span>
+                        <span class="meta-item">📍 {{ $usuario->ubicacion }}</span>
                     </div>
                 </div>
             </div>

@@ -3,14 +3,12 @@
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EspecieController;
-use App\Models\Especie;
 use Illuminate\Support\Facades\Route;
 
-// 1. RUTAS PÚBLICAS (Accesibles por todos)
+// Home
 Route::get('/', [EventoController::class, 'index'])->name('home');
-Route::resource('eventos', EventoController::class)->only(['index', 'show'])->whereNumber('evento');
 
-// 2. RUTAS PARA INVITADOS (Solo si NO estás logueado)
+// Rutas visibles por los usuarios invitados
 Route::middleware('guest')->group(function () {
     // Login
     Route::get('login', [UsuarioController::class, 'loginForm'])->name('login');
@@ -21,21 +19,29 @@ Route::middleware('guest')->group(function () {
     Route::post('usuarios', [UsuarioController::class, 'store'])->name('usuarios.store');
 });
 
-// 3. RUTAS PROTEGIDAS (Solo si ESTÁS logueado)
-Route::middleware('auth')->group(function () {
-    
-    Route::post('logout', [UsuarioController::class, 'logout'])->name('auth.logout');
-    
-    // Usuarios: Ver lista, perfil, editar y borrar
-    Route::resource('usuarios', UsuarioController::class)->except(['create', 'store']);
-    
-    // Eventos: Crear, editar y borrar
-    Route::resource('eventos', EventoController::class)->except(['index', 'show']);
-    Route::post('/eventos/{evento}/unirse', [EventoController::class, 'unirse'])->name('eventos.unirse');
-    Route::post('/eventos/{evento}/desunirse', [EventoController::class, 'desunirse'])->name('eventos.desunirse');
-    Route::resource('especies', EspecieController::class)->only(['index', 'show'])->whereNumber('especie');
+// Mostrar eventos y usuarios
+Route::get('eventos', [EventoController::class, 'index'])->name('eventos.index');
+Route::get('eventos/{evento}', [EventoController::class, 'show'])->name('eventos.show')->whereNumber('evento');
 
-    Route::put('/eventos/{evento}/especies', [App\Http\Controllers\EventoController::class, 'updateEspecies'])
-        ->name('eventos.updateEspecies')
-        ->middleware('auth');
+
+// Rutas visibles para usuarios logeados
+Route::middleware('auth')->group(function () {
+
+    Route::post('logout', [UsuarioController::class, 'logout'])->name('auth.logout');
+
+    // Usuarios: Excepto crear y guardar (que están arriba en guest)
+    Route::resource('usuarios', UsuarioController::class)->except(['create', 'store']);
+
+    // Eventos: Solo los métodos de escritura
+    Route::resource('eventos', EventoController::class)->except(['index', 'show']);
+
+    // Acciones específicas de Eventos (Unirse/Desunirse/Especies)
+    Route::prefix('eventos/{evento}')->group(function () {
+        Route::post('unirse', [EventoController::class, 'unirse'])->name('eventos.unirse');
+        Route::post('desunirse', [EventoController::class, 'desunirse'])->name('eventos.desunirse');
+        Route::put('especies', [EventoController::class, 'updateEspecies'])->name('eventos.updateEspecies');
+    });
+
+    // Especies: Solo lectura para loggeados
+    Route::resource('especies', EspecieController::class)->only(['index', 'show'])->whereNumber('especie');
 });

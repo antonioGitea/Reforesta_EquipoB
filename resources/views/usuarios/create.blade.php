@@ -21,14 +21,14 @@
             <div class="form-group">
                 <label>Usuario (Nick):</label>
                 <input type="text" name="nick" value="{{ old('nick') }}" 
-                       class="{{ $errors->has('nick') ? 'is-invalid' : '' }}" required>
+                       class="{{ $errors->has('nick') ? 'is-invalid' : '' }}">
                 @error('nick') <span class="error-message">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">
                 <label>Nombre Completo:</label>
                 <input type="text" name="nombre" value="{{ old('nombre') }}" 
-                       class="{{ $errors->has('nombre') ? 'is-invalid' : '' }}" required>
+                       class="{{ $errors->has('nombre') ? 'is-invalid' : '' }}">
                 @error('nombre') <span class="error-message">{{ $message }}</span> @enderror
             </div>
 
@@ -36,27 +36,27 @@
                 <label>Ubicación:</label>
                 <input type="text" name="ubicacion" value="{{ old('ubicacion') }}" 
                        class="{{ $errors->has('ubicacion') ? 'is-invalid' : '' }}" 
-                       placeholder="Ej: Madrid, España" required>
+                       placeholder="Ej: Madrid, España">
                 @error('ubicacion') <span class="error-message">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">
                 <label>Correo Electrónico:</label>
                 <input type="email" name="email" value="{{ old('email') }}" 
-                       class="{{ $errors->has('email') ? 'is-invalid' : '' }}" required>
+                       class="{{ $errors->has('email') ? 'is-invalid' : '' }}">
                 @error('email') <span class="error-message">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">
                 <label>Contraseña:</label>
                 <input type="password" name="password" 
-                       class="{{ $errors->has('password') ? 'is-invalid' : '' }}" required>
+                       class="{{ $errors->has('password') ? 'is-invalid' : '' }}">
                 @error('password') <span class="error-message">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group">
                 <label>Repetir Contraseña:</label>
-                <input type="password" name="password_confirmation" required>
+                <input type="password" name="password_confirmation">
             </div>
 
             <button type="submit" class="btn-submit">Registrarse</button>
