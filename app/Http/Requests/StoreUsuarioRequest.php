@@ -6,35 +6,32 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreUsuarioRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    // Permite procesar esta solicitud.
     public function authorize(): bool
     {
-        // Importante: debe estar en true para que permita procesar el formulario
+        // Debe estar en true para aceptar el formulario.
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     */
+    // Reglas para registro y edición de usuario.
     public function rules(): array
     {
-        // Obtenemos el ID del usuario de la ruta para ignorar su propio nick/email en el unique
+        // Ignora el propio usuario al validar únicos en edición.
         $usuarioId = $this->route('usuario') ? $this->route('usuario')->id : $this->route('id');
+        $passwordRules = $this->isMethod('post')
+            ? ['required', 'string', 'min:6', 'confirmed']
+            : ['nullable', 'string', 'min:6', 'confirmed'];
 
         return [
             'nombre'    => ['required', 'max:255', 'regex:/^[\pL\s]+$/u'],
             'nick'      => 'required|string|max:50|unique:usuarios,nick,' . $usuarioId,
             'email'     => 'required|email|max:255|unique:usuarios,email,' . $usuarioId,
-            'password'  => 'nullable|string|min:6|confirmed',
+            'password'  => $passwordRules,
             'ubicacion' => ['required', 'max:255', 'regex:/^[\pL\s]+$/u'],
         ];
     }
 
-    /**
-     * Custom error messages.
-     */
+    // Mensajes personalizados de validación.
     public function messages(): array
     {
         return [

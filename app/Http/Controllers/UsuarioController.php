@@ -11,72 +11,65 @@ use Illuminate\Http\Request;
 class UsuarioController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     */
+    // Lista todos los usuarios.
     public function index()
     {
         $usuarios = Usuario::all();
         return view('usuarios.index', compact('usuarios'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Muestra el formulario de registro.
     public function create()
     {
         return view('usuarios.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Guarda un usuario nuevo y lo autentica.
+    public function store(StoreUsuarioRequest $request)
     {
-        // 
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+        $data['tipo'] = $data['tipo'] ?? 'usuario';
+
+        $usuario = Usuario::create($data);
+        Auth::login($usuario);
+
+        return redirect()->route('home')->with('success', 'Registro completado con éxito.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Muestra el perfil de un usuario.
     public function show(Usuario $usuario)
     {
         $usuario = Usuario::findOrFail($usuario->id);
         return view("usuarios.show", compact("usuario"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Muestra el formulario para editar usuario.
     public function edit(string $id)
     {
         $usuario = Usuario::findOrFail($id);
         return view('usuarios.edit', compact('usuario'));
     }
 
-    /**
-     * Update the specified resource in storage.
-    */
+    // Actualiza los datos del usuario.
     public function update(StoreUsuarioRequest $request, Usuario $usuario)
     {
-        // 1. Recolectamos los datos validados (excepto password y avatar por ahora)
+        // Datos que se pueden editar.
         $data = $request->only(['nombre', 'nick', 'email', 'ubicacion']);
 
-        // 2. Lógica para la Contraseña: solo se actualiza si el usuario escribió algo
+        // Solo cambia la clave si llega una nueva.
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         }
 
-        // 4. Actualizamos el modelo con el array final
+        // Guarda cambios.
         $usuario->update($data);
 
-        // 5. Redireccionamos con un mensaje de éxito
+        // Vuelve al perfil.
         return redirect()->route('usuarios.show', $usuario->id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-    */
+    // Elimina un usuario (pendiente).
     public function destroy(Usuario $usuario)
     {
         //
@@ -105,3 +98,4 @@ class UsuarioController extends Controller
         return redirect('/');
     }
 }
+

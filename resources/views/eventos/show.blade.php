@@ -24,6 +24,16 @@
     @include('nav')
 
     <div class="container-show" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+        @if(session('success'))
+            <div style="background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid #2ecc71; padding: 10px 14px; border-radius: 8px; margin-bottom: 20px;">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div style="background: rgba(248, 81, 73, 0.15); color: #f85149; border: 1px solid #f85149; padding: 10px 14px; border-radius: 8px; margin-bottom: 20px;">
+                {{ session('error') }}
+            </div>
+        @endif
         
         {{-- Header del Evento --}}
         <header class="main-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; border-bottom: 1px solid #30363d; padding-bottom: 30px;">
@@ -130,12 +140,18 @@
                     <div class="sidebar-actions">
                         @auth
                             @if(auth()->id() != $evento->id_usuario)
-                                <form action="{{ route('eventos.unirse', $evento->id) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" style="background: #238636; color: white; width: 100%; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                                        UNIRME AL EVENTO
+                                @if($evento->usuarios->contains('id', auth()->id()))
+                                    <button type="button" disabled style="background: #30363d; color: #8b949e; width: 100%; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: not-allowed;">
+                                        YA ESTAS UNIDO
                                     </button>
-                                </form>
+                                @else
+                                    <form action="{{ route('eventos.unirse', $evento->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" style="background: #238636; color: white; width: 100%; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                                            UNIRME AL EVENTO
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         @else
                             <a href="{{ route('login') }}" style="display: block; text-align: center; background: #30363d; color: white; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold;">

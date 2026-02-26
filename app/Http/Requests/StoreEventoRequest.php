@@ -6,19 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreEventoRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    // Permite procesar esta solicitud.
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    // Reglas de validación al crear/editar eventos.
     public function rules(): array
     {
         return [
@@ -33,6 +27,7 @@ class StoreEventoRequest extends FormRequest
         ];
     }
 
+    // Mensajes personalizados de validación.
     public function messages(): array
     {
         return [

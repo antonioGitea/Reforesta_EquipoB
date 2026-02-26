@@ -10,114 +10,118 @@ use Illuminate\Support\Facades\Auth;
 
 class EventoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Lista todos los eventos.
     public function index()
     {
         $eventos = Evento::all();
         return view('eventos.index', compact('eventos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Muestra el formulario para crear eventos.
     public function create()
     {
         $especies = Especie::all();
         return view('eventos.create', compact('especies'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Guarda un evento nuevo.
     public function store(StoreEventoRequest $request)
     {
-        // Si el código llega aquí, es que la validación ya pasó con éxito.
-
-        // 1. Obtener los datos validados
         $validado = $request->validated();
-
-        // 2. Añadir el usuario
         $validado['id_usuario'] = Auth::id();
 
-        // 3. Crear el evento
         $evento = Evento::create($validado);
 
-        // 4. Especies
         if ($request->has('id_especies')) {
             $evento->especies()->attach($request->id_especies);
         }
 
-        return redirect()->route('home')->with('success', '¡Evento creado con éxito!');
+        return redirect()->route('home')->with('success', 'Evento creado con exito.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Muestra el detalle del evento.
     public function show(Evento $evento)
     {
-        // Cargamos el anfitrión, los participantes y las especies asociadas
         $especies = Especie::all();
         $evento->load(['anfitrion', 'usuarios', 'especies']);
         return view('eventos.show', compact('evento', 'especies'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Muestra el formulario para editar el evento.
+    public function edit(Evento $evento)
     {
-        $evento = Evento::findOrFail($id);
-        return view('eventos.edit', compact('contacto'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Evento $evento)
-    {
-        // 1. Verificación de seguridad
-        if (Auth::user()->id !== $evento->user_id && Auth::user()->rol !== 'admin') {
-            abort(403, 'No tienes permiso para modificar las especies de este evento.');
+        if (Auth::id() != $evento->id_usuario && Auth::user()->tipo != 'admin') {
+            abort(403, 'No tienes permiso para editar este evento.');
         }
 
-        // 2. Actualizar datos del evento
-        $evento->update($request->only(['nombre', 'descripcion', 'fecha', 'ubicacion']));
+        $especies = Especie::all();
+        return view('eventos.edit', compact('evento', 'especies'));
+    }
 
-        // 3. Sincronizar especies (el método sync borra las que no estén en el array y añade las nuevas)
-        if ($request->has('especies')) {
-            $evento->especies()->sync($request->especies);
+    // Actualiza un evento existente.
+    public function update(StoreEventoRequest $request, Evento $evento)
+    {
+        if (Auth::id() != $evento->id_usuario && Auth::user()->tipo != 'admin') {
+            abort(403, 'No tienes permiso para modificar este evento.');
+        }
+
+        $validado = $request->validated();
+
+        $evento->update([
+            'nombre' => $validado['nombre'],
+            'descripcion' => $validado['descripcion'],
+            'fecha' => $validado['fecha'],
+            'ubicacion' => $validado['ubicacion'],
+            'tipo_terreno' => $validado['tipo_terreno'] ?? null,
+            'tipo_evento' => $validado['tipo_evento'],
+        ]);
+
+        if ($request->has('id_especies')) {
+            $evento->especies()->sync($request->id_especies);
         } else {
-            // Si no mandan nada, quitamos todas las especies del evento
             $evento->especies()->detach();
         }
 
         return redirect()->route('eventos.show', $evento->id)->with('success', 'Evento actualizado.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Elimina un evento.
     public function destroy(string $id)
     {
         Evento::findOrFail($id)->delete();
         $eventos = Evento::all();
-        return view("eventos.index", compact('eventos'));
+        return view('eventos.index', compact('eventos'));
     }
 
+    // Actualiza las especies del evento.
     public function updateEspecies(Request $request, Evento $evento)
     {
-        // 1. ¿Eres el dueño o el jefe? Si no, fuera.
         if (Auth::id() != $evento->id_usuario && Auth::user()->tipo != 'admin') {
             abort(403);
         }
 
-        // 2. Guardar los cambios (sync hace toda la magia)
-        // Toma la lista de la web y la deja igual en la base de datos
-        $evento->especies()->attach($request->especies);
+        if ($request->has('especies')) {
+            $evento->especies()->sync($request->especies);
+        }
 
-        // 3. Volver a la página del evento
         return back()->with('success', 'Especies guardadas');
+    }
+
+    // Une al usuario autenticado sin duplicar registros.
+    public function unirse(Evento $evento)
+    {
+        $usuarioId = Auth::id();
+
+        if (!$usuarioId) {
+            return redirect()->route('login');
+        }
+
+        if ($evento->id_usuario == $usuarioId) {
+            return back()->with('error', 'No puedes unirte a un evento que organizas.');
+        }
+
+        $evento->usuarios()->syncWithoutDetaching([$usuarioId]);
+
+        return back()->with('success', 'Te has unido al evento.');
     }
 }
