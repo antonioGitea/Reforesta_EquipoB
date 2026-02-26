@@ -6,6 +6,7 @@ use App\Models\Evento;
 use App\Models\Especie;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEventoRequest;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
 
 class EventoController extends Controller
@@ -110,18 +111,44 @@ class EventoController extends Controller
     // Une al usuario autenticado sin duplicar registros.
     public function unirse(Evento $evento)
     {
-        $usuarioId = Auth::id();
+        $idUsuario = Auth::id();
 
-        if (!$usuarioId) {
-            return redirect()->route('login');
-        }
-
-        if ($evento->id_usuario == $usuarioId) {
+        // 1. Validar que el usuario no sea el organizador
+        if ($evento->id_usuario === $idUsuario) {
             return back()->with('error', 'No puedes unirte a un evento que organizas.');
         }
 
-        $evento->usuarios()->syncWithoutDetaching([$usuarioId]);
+        // 2. Verificar si ya está unido (especificando la tabla users para evitar ambigüedad)
+        if (!$evento->usuarios()->where('id_usuario', $idUsuario)->exists()) {
 
-        return back()->with('success', 'Te has unido al evento.');
+            // Relacionar en la tabla pivote
+            $evento->usuarios()->attach($idUsuario);
+
+            // 3. Incremento forzado vía Modelo (Esto no falla si la columna es numérica)
+            Usuario::where('id', $idUsuario)->increment('karma', 3);
+
+            return back()->with('success', 'Te has unido al evento y sumaste 3 de karma.');
+        }
+
+        return back()->with('info', 'Ya formas parte de este evento.');
+    }
+
+    public function desunirse(Evento $evento)
+    {
+        $userId = Auth::id();
+
+        // 1. Verificar si el usuario realmente está unido al evento
+        if ($evento->usuarios()->where('id_usuario', $userId)->exists()) {
+
+            // Eliminar la relación en la tabla pivote
+            $evento->usuarios()->detach($userId);
+
+            // 2. Restar 2 de karma usando el modelo Usuario
+            Usuario::where('id', $userId)->decrement('karma', 3);
+
+            return back()->with('success', 'Has abandonado el evento. Se han restado 2 puntos de karma.');
+        }
+
+        return back()->with('error', 'No formas parte de este evento.');
     }
 }

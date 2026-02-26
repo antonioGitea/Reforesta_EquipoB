@@ -69,7 +69,6 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.show', $usuario->id);
     }
 
-    // Elimina un usuario (pendiente).
     public function destroy(Usuario $usuario)
     {
         //
